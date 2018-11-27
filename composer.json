@@ -1,0 +1,60 @@
+{
+    "name": "ngabor84/laravel-jwt-auth",
+    "description": "JWT authentication middleware for the Laravel and Lumen framework",
+    "keywords": ["laravel", "lumen", "auth", "jwt"],
+    "homepage": "https://github.com/ngabor84/laravel-jwt-auth",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Gabor Nemeth",
+            "email": "negabor@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "firebase/php-jwt": "^5.0",
+        "illuminate/support": "^5.7",
+        "symfony/http-foundation": "^4.1",
+        "symfony/http-kernel": "^4.1"
+    },
+    "require-dev": {
+        "laravel/framework": "^5.7",
+        "laravel/lumen-framework": "^5.7",
+        "phpunit/phpunit": "^7.4",
+        "squizlabs/php_codesniffer": "^3.3",
+        "orchestra/testbench": "^3.7",
+        "phpstan/phpstan": "^0.10.5",
+        "slevomat/coding-standard": "^4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Middleware\\Auth\\Jwt\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Middleware\\Auth\\Jwt\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Middleware\\Auth\\Jwt\\Providers\\LaravelServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "analyze": "./vendor/bin/phpstan analyze -l 5 src/",
+        "check-style": "./vendor/bin/phpcs --standard=ruleset.xml -ps --colors src/",
+        "fix-style": "./vendor/bin/phpcbf -p --standard=ruleset.xml src/",
+        "test": "./vendor/bin/phpunit -c phpunit.xml",
+        "cat": [
+            "@check-style",
+            "@analyze",
+            "@test"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
