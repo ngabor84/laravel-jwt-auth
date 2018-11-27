@@ -39,5 +39,7 @@ Create a config directory (if it's not exist), and create an jwt.php in it with 
 ```php
 return [
     'secret' => env('JWT_SECRET'),
+    'algo' => 'HS256',
+    'expiration' => 10, // 10 minutes
 ];
 ```
