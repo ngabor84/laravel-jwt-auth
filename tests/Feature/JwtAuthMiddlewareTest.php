@@ -31,6 +31,20 @@ class JwtAuthMiddlewareTest extends BaseTestCase
     /**
      * @test
      */
+    public function protectedEndpointDispatchJwtAuthFailureEventWithActualRequestWhenRequestDoesNotHaveJwtToken(): void
+    {
+        Event::fake();
+
+        $this->get('api/protected');
+
+        Event::assertDispatched(JwtAuthFailure::class, function(JwtAuthFailure $event) {
+            return $event->getRequest() === request();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function protectedEndpointReturnWithStatus401WhenRequestHasInValidJwtToken(): void
     {
         $response = $this->get('api/protected', ['Authorization' => 'Bearer invalid_token']);

@@ -25,6 +25,8 @@ class JwtAuthMiddleware
         $token = $request->bearerToken();
 
         if ($token === null) {
+            event(new JwtAuthFailure($request));
+
             return response()->json(['error' => 'Jwt token is missing'], 401);
         }
 
