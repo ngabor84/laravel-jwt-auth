@@ -2,20 +2,22 @@
 
 namespace Middleware\Auth\Jwt\Events;
 
+use Illuminate\Http\Request;
+
 class JwtAuthFailure
 {
     /**
-     * @var string
+     * @var Request
      */
-    private $token;
+    private $request;
 
-    public function __construct(string $token)
+    public function __construct(Request $request)
     {
-        $this->token = $token;
+        $this->request = $request;
     }
 
-    public function getToken(): string
+    public function getRequest(): Request
     {
-        return $this->token;
+        return $this->request;
     }
 }

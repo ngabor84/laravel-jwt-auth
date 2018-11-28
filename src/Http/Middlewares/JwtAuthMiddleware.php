@@ -31,7 +31,7 @@ class JwtAuthMiddleware
         try {
             $session = $this->encoder->decode($token);
         } catch (JwtTokenDecodeException $e) {
-            event(new JwtAuthFailure($token));
+            event(new JwtAuthFailure($request));
 
             return response()->json(['error' => 'Unable to decode jwt token'], 401);
         }
