@@ -2,8 +2,11 @@
 
 namespace Middleware\Auth\Jwt\Tests\Feature;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Middleware\Auth\Jwt\Events\JwtAuthFailure;
+use Middleware\Auth\Jwt\Http\Middlewares\JwtAuthMiddleware;
 use Middleware\Auth\Jwt\Services\TokenEncoder;
 
 class JwtAuthMiddlewareTest extends BaseTestCase
@@ -91,5 +94,74 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $response = $this->get('api/protected', ['Authorization' => 'Bearer ' . $token]);
 
         $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function handle_decorateAttribuesIsEnabledAndTokenHasPayload_decorateTokenPayloadToRequestAttributes(): void
+    {
+        config(['jwt.decorateRequestWithTokenPayload' => true]);
+        $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
+        $token = $tokenEncoder->encode(['staffId' => 1234]);
+        $middleware = new JwtAuthMiddleware($tokenEncoder, config());
+        $request = new Request();
+        $request->headers->add(['Authorization' => "Bearer $token"]);
+        $next = function () {
+            $responseMock = $this->mock(Response::class);
+            $responseMock->shouldReceive('header')->once();
+
+            return $responseMock;
+        };
+
+        $middleware->handle($request, $next);
+
+        $this->assertEquals(['staffId' => 1234], $request->attributes->get('tokenPayload'));
+    }
+
+    /**
+     * @test
+     */
+    public function handle_decorateAttribuesIsEnabledButTokenHasEmptyPayload_decorateEmptyTokenPayloadToRequestAttributes(): void
+    {
+        config(['jwt.decorateRequestWithTokenPayload' => true]);
+        $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
+        $token = $tokenEncoder->encode([]);
+        $middleware = new JwtAuthMiddleware($tokenEncoder, config());
+        $request = new Request();
+        $request->headers->add(['Authorization' => "Bearer $token"]);
+        $next = function () {
+            $responseMock = $this->mock(Response::class);
+            $responseMock->shouldReceive('header')->once();
+
+            return $responseMock;
+        };
+
+        $middleware->handle($request, $next);
+
+        $this->assertEquals([], $request->attributes->get('tokenPayload'));
+    }
+
+    /**
+     * @test
+     */
+    public function handle_decorateAttribuesIsDisabled_doesNotDecorateTokenPayloadToRequestAttributes(): void
+    {
+        config(['jwt.decorateRequestWithTokenPayload' => false]);
+        $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
+        $token = $tokenEncoder->encode(['staffId' => 1234]);
+        $middleware = new JwtAuthMiddleware($tokenEncoder, config());
+        $request = new Request();
+        $request->headers->add(['Authorization' => "Bearer $token"]);
+        $next = function () {
+            $responseMock = $this->mock(Response::class);
+            $responseMock->shouldReceive('header')->once();
+
+            return $responseMock;
+        };
+
+        $middleware->handle($request, $next);
+
+        $this->assertArrayNotHasKey('tokenPayload', $request->attributes->all());
     }
 }

@@ -41,5 +41,6 @@ return [
     'secret' => env('JWT_SECRET'),
     'algo' => 'HS256',
     'expiration' => 10, // 10 minutes
+    'decorateRequestWithTokenPayload' => false, // if it's true then after authentication the request will contain a tokenPayload attribute with the payload of the JWT token
 ];
 ```

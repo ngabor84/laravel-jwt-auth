@@ -3,6 +3,7 @@
 namespace Middleware\Auth\Jwt\Http\Middlewares;
 
 use Closure;
+use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Middleware\Auth\Jwt\Events\JwtAuthFailure;
 use Middleware\Auth\Jwt\Exceptions\JwtTokenDecodeException;
@@ -15,9 +16,15 @@ class JwtAuthMiddleware
      */
     private $encoder;
 
-    public function __construct(TokenEncoder $encoder)
+    /**
+     * @var bool
+     */
+    private $decorateRequestWithTokenPayload;
+
+    public function __construct(TokenEncoder $encoder, Config $config)
     {
         $this->encoder = $encoder;
+        $this->decorateRequestWithTokenPayload = $config->get('jwt.decorateRequestWithTokenPayload', false);
     }
 
     public function handle(Request $request, Closure $next)
@@ -36,6 +43,10 @@ class JwtAuthMiddleware
             event(new JwtAuthFailure($request));
 
             return response()->json(['error' => 'Unable to decode jwt token'], 401);
+        }
+
+        if ($this->decorateRequestWithTokenPayload) {
+            $request->attributes->add(['tokenPayload' => $session]);
         }
 
         $response = $next($request);

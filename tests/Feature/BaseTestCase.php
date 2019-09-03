@@ -2,13 +2,15 @@
 
 namespace Middleware\Auth\Jwt\Tests\Feature;
 
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Router;
 use Middleware\Auth\Jwt\Http\Middlewares\JwtAuthMiddleware;
 use Middleware\Auth\Jwt\Providers\LaravelServiceProvider;
+use Orchestra\Testbench\TestCase;
 
-abstract class BaseTestCase extends \Orchestra\Testbench\TestCase
+abstract class BaseTestCase extends TestCase
 {
-    use \Illuminate\Foundation\Validation\ValidatesRequests;
+    use ValidatesRequests;
 
     protected function resolveApplicationConfiguration($app): void
     {
@@ -18,6 +20,7 @@ abstract class BaseTestCase extends \Orchestra\Testbench\TestCase
             'secret' => 'test_secret',
             'algo' => 'HS256',
             'expiration' => 10,
+            'decorateRequestWithTokenPayload' => false,
         ];
     }
 
