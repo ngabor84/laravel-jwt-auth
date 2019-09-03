@@ -46,7 +46,7 @@ class JwtAuthMiddleware
         }
 
         if ($this->decorateRequestWithTokenPayload) {
-            $request->attributes->add(['tokenPayload' => $session]);
+            $request->request->add(['tokenPayload' => $session]);
         }
 
         $response = $next($request);
