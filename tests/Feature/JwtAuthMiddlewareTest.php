@@ -104,7 +104,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         config(['jwt.decorateRequestWithTokenPayload' => true]);
         $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
         $token = $tokenEncoder->encode(['staffId' => 1234]);
-        $middleware = new JwtAuthMiddleware($tokenEncoder, config());
+        $middleware = new JwtAuthMiddleware($tokenEncoder);
         $request = new Request();
         $request->headers->add(['Authorization' => "Bearer $token"]);
         $next = function () {
@@ -127,7 +127,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         config(['jwt.decorateRequestWithTokenPayload' => true]);
         $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
         $token = $tokenEncoder->encode([]);
-        $middleware = new JwtAuthMiddleware($tokenEncoder, config());
+        $middleware = new JwtAuthMiddleware($tokenEncoder);
         $request = new Request();
         $request->headers->add(['Authorization' => "Bearer $token"]);
         $next = function () {
@@ -150,7 +150,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         config(['jwt.decorateRequestWithTokenPayload' => false]);
         $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
         $token = $tokenEncoder->encode(['staffId' => 1234]);
-        $middleware = new JwtAuthMiddleware($tokenEncoder, config());
+        $middleware = new JwtAuthMiddleware($tokenEncoder);
         $request = new Request();
         $request->headers->add(['Authorization' => "Bearer $token"]);
         $next = function () {

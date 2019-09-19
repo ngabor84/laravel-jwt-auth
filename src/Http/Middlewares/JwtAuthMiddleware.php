@@ -3,7 +3,6 @@
 namespace Middleware\Auth\Jwt\Http\Middlewares;
 
 use Closure;
-use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Middleware\Auth\Jwt\Events\JwtAuthFailure;
 use Middleware\Auth\Jwt\Exceptions\JwtTokenDecodeException;
@@ -21,10 +20,10 @@ class JwtAuthMiddleware
      */
     private $decorateRequestWithTokenPayload;
 
-    public function __construct(TokenEncoder $encoder, Config $config)
+    public function __construct(TokenEncoder $encoder)
     {
         $this->encoder = $encoder;
-        $this->decorateRequestWithTokenPayload = $config->get('jwt.decorateRequestWithTokenPayload', false);
+        $this->decorateRequestWithTokenPayload = config('jwt.decorateRequestWithTokenPayload', false);
     }
 
     public function handle(Request $request, Closure $next)
