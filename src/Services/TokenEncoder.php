@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace Middleware\Auth\Jwt\Services;
 
@@ -45,7 +45,7 @@ class TokenEncoder
     public function decode(string $token): array
     {
         try {
-            $payload =  (array) JWT::decode($token, $this->secret, [$this->algo]);
+            $payload = (array) JWT::decode($token, $this->secret, [$this->algo]);
             unset($payload['exp']);
 
             return $payload;

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace Middleware\Auth\Jwt\Http\Middlewares;
 
@@ -28,19 +28,12 @@ class JwtAuthMiddleware
 
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->bearerToken();
-
-        if ($token === null) {
-            event(new JwtAuthFailure($request));
-
-            return response()->json(['error' => 'Jwt token is missing'], 401);
-        }
-
         try {
+            $token = $request->bearerToken();
+            $this->validateToken($request, $token);
             $session = $this->encoder->decode($token);
         } catch (JwtTokenDecodeException $e) {
             event(new JwtAuthFailure($request));
-
             return response()->json(['error' => 'Unable to decode jwt token'], 401);
         }
 
@@ -54,5 +47,14 @@ class JwtAuthMiddleware
         $response->header('Authorization', ["Bearer {$newToken}"]);
 
         return $response;
+    }
+
+    private function validateToken(Request $request, ?string $token): void
+    {
+        if ($token === null) {
+            event(new JwtAuthFailure($request));
+
+            throw new JwtTokenDecodeException('Jwt token is missing');
+        }
     }
 }

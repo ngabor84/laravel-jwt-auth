@@ -60,7 +60,7 @@ class TokenEncoderTest extends TestCase
         $encoder = new TokenEncoder('s0m3s3cr3t', 'HS256', 10);
         $token = $encoder->encode(['param' => 'value']);
 
-        $this->assertInternalType('string', $token);
+        $this->assertIsString($token);
     }
 
     /**

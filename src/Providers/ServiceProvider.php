@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace Middleware\Auth\Jwt\Providers;
 
@@ -28,7 +28,7 @@ abstract class ServiceProvider extends BaseServiceProvider
             static function ($app) {
                 $config = $app['config']->get('jwt');
 
-                return new TokenEncoder($config['secret'], $config['algo'], (int)$config['expiration']);
+                return new TokenEncoder($config['secret'], $config['algo'], (int) $config['expiration']);
             }
         );
     }
