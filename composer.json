@@ -12,20 +12,18 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.3",
         "firebase/php-jwt": "^5.0",
-        "illuminate/support": "^5.7",
-        "symfony/http-foundation": "^4.1",
-        "symfony/http-kernel": "^4.1"
+        "illuminate/support": "^6.6",
+        "symfony/http-foundation": "^4.4",
+        "symfony/http-kernel": "^4.4"
     },
     "require-dev": {
-        "laravel/framework": "^5.7",
-        "laravel/lumen-framework": "^5.7",
-        "phpunit/phpunit": "^7.4",
-        "squizlabs/php_codesniffer": "^3.3",
+        "laravel/framework": "^6.6",
+        "laravel/lumen-framework": "^6.2",
+        "phpunit/phpunit": "^8.4",
         "orchestra/testbench": "^3.7",
-        "phpstan/phpstan": "^0.10.5",
-        "slevomat/coding-standard": "^4.8"
+        "nunomaduro/phpinsights": "^1.11"
     },
     "autoload": {
         "psr-4": {
@@ -43,17 +41,6 @@
                 "Middleware\\Auth\\Jwt\\Providers\\LaravelServiceProvider"
             ]
         }
-    },
-    "scripts": {
-        "analyze": "./vendor/bin/phpstan analyze -l 5 src/",
-        "check-style": "./vendor/bin/phpcs --standard=ruleset.xml -ps --colors src/",
-        "fix-style": "./vendor/bin/phpcbf -p --standard=ruleset.xml src/",
-        "test": "./vendor/bin/phpunit -c phpunit.xml",
-        "cat": [
-            "@check-style",
-            "@analyze",
-            "@test"
-        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
