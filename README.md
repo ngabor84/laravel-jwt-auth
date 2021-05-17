@@ -1,4 +1,3 @@
-[ ![Codeship Status for ngabor84/laravel-jwt-auth](https://app.codeship.com/projects/4acd9840-d44b-0136-bbd3-12df9672426a/status?branch=master)](https://app.codeship.com/projects/316531)
 [![GitHub license](https://img.shields.io/github/license/ngabor84/laravel-jwt-auth.svg)](https://github.com/ngabor84/laravel-jwt-auth/blob/master/LICENSE)
 
 # JWT Auth Middleware
