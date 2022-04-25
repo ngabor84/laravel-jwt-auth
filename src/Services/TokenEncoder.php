@@ -3,6 +3,7 @@
 namespace Middleware\Auth\Jwt\Services;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Middleware\Auth\Jwt\Exceptions\JwtTokenDecodeException;
 use Middleware\Auth\Jwt\Exceptions\TokenEncoderInitializeException;
 use Throwable;
@@ -45,7 +46,7 @@ class TokenEncoder
     public function decode(string $token): array
     {
         try {
-            $payload = (array) JWT::decode($token, $this->secret, [$this->algo]);
+            $payload = (array) JWT::decode($token, new Key($this->secret, $this->algo));
             unset($payload['exp']);
 
             return $payload;
