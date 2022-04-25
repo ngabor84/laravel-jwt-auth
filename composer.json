@@ -13,16 +13,16 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "firebase/php-jwt": "^v5.2.1",
-        "illuminate/support": "^v8.41",
-        "symfony/http-foundation": "^v5.2.8",
-        "symfony/http-kernel": "^v5.2.8"
+        "firebase/php-jwt": "^v6.1",
+        "illuminate/support": "^v9.9",
+        "symfony/http-foundation": "^v6.0",
+        "symfony/http-kernel": "^v6.0"
     },
     "require-dev": {
-        "laravel/framework": "^v8.0",
-        "laravel/lumen-framework": "^8.0",
-        "phpunit/phpunit": "^9.3",
-        "orchestra/testbench": "^v6.0"
+        "laravel/framework": "^v9.9",
+        "laravel/lumen-framework": "^9.0",
+        "phpunit/phpunit": "^9.5",
+        "orchestra/testbench": "^v7.4"
     },
     "autoload": {
         "psr-4": {
