@@ -116,7 +116,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
 
         $middleware->handle($request, $next);
 
-        $this->assertEquals(['staffId' => 1234], $request->request->all('tokenPayload'));
+        $this->assertEquals(['staffId' => 1234], $request->get('tokenPayload'));
     }
 
     /**
@@ -139,7 +139,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
 
         $middleware->handle($request, $next);
 
-        $this->assertEquals([], $request->request->all('tokenPayload'));
+        $this->assertEquals([], $request->get('tokenPayload'));
     }
 
     /**
@@ -162,6 +162,6 @@ class JwtAuthMiddlewareTest extends BaseTestCase
 
         $middleware->handle($request, $next);
 
-        $this->assertArrayNotHasKey('tokenPayload', $request->request->all());
+        $this->assertArrayNotHasKey('tokenPayload', $request->all());
     }
 }
