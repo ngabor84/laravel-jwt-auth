@@ -10,20 +10,11 @@ use Throwable;
 
 class TokenEncoder
 {
-    /**
-     * @var string
-     */
-    private $secret;
+    private string $secret;
 
-    /**
-     * @var string
-     */
-    private $algo;
+    private string $algo;
 
-    /**
-     * @var int
-     */
-    private $expiration;
+    private int $expiration;
 
     public function __construct(string $secret, string $algo, int $expiration)
     {

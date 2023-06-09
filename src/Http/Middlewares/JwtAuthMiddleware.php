@@ -10,15 +10,9 @@ use Middleware\Auth\Jwt\Services\TokenEncoder;
 
 class JwtAuthMiddleware
 {
-    /**
-     * @var TokenEncoder
-     */
-    private $encoder;
+    private TokenEncoder $encoder;
 
-    /**
-     * @var bool
-     */
-    private $decorateRequestWithTokenPayload;
+    private bool $decorateRequestWithTokenPayload;
 
     public function __construct(TokenEncoder $encoder)
     {
