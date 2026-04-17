@@ -6,13 +6,12 @@ use Middleware\Auth\Jwt\Exceptions\JwtTokenDecodeException;
 use Middleware\Auth\Jwt\Exceptions\TokenEncoderInitializeException;
 use Middleware\Auth\Jwt\Services\TokenEncoder;
 use Firebase\JWT\JWT;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TokenEncoderTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function encode_WhenSecretIsEmpty_ShouldThrowException()
     {
         try {
@@ -24,9 +23,7 @@ class TokenEncoderTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encode_WhenAlgoIsEmpty_ShouldThrowException()
     {
         try {
@@ -38,9 +35,7 @@ class TokenEncoderTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encode_WhenExpirationIsZero_ShouldThrowException()
     {
         try {
@@ -52,23 +47,19 @@ class TokenEncoderTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encode_CalledWithPayload_ReturnsString()
     {
-        $encoder = new TokenEncoder('s0m3s3cr3t', 'HS256', 10);
+        $encoder = new TokenEncoder('s0m3s3cr3t-that-is-long-enough-32', 'HS256', 10);
         $token = $encoder->encode(['param' => 'value']);
 
         $this->assertIsString($token);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encode_receiveDifferentPayload_shouldReturnsDifferentToken()
     {
-        $encoder = new TokenEncoder('s0m3s3cr3t', 'HS256', 10);
+        $encoder = new TokenEncoder('s0m3s3cr3t-that-is-long-enough-32', 'HS256', 10);
 
         $firstToken = $encoder->encode(['first' => 'payload']);
         $secondToken = $encoder->encode(['second' => 'payload']);
@@ -76,26 +67,22 @@ class TokenEncoderTest extends TestCase
         $this->assertNotEquals($firstToken, $secondToken);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decode_whenCalledWithProperParameters_shouldReturnDecodedPayload()
     {
         $payload = ['first' => 'payload'];
 
-        $encoder = new TokenEncoder('s0m3s3cr3t', 'HS256', 10);
+        $encoder = new TokenEncoder('s0m3s3cr3t-that-is-long-enough-32', 'HS256', 10);
 
         $token = $encoder->encode($payload);
 
         $this->assertEquals($payload, $encoder->decode($token));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decode_whenCalledWithInvalidToken_shouldThrowException()
     {
-        $encoder = new TokenEncoder('s0m3s3cr3t', 'HS256', 10);
+        $encoder = new TokenEncoder('s0m3s3cr3t-that-is-long-enough-32', 'HS256', 10);
 
         $token = $encoder->encode(['first' => 'payload']);
 
@@ -108,13 +95,11 @@ class TokenEncoderTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decode_WhenTryingToDecodeWithOtherSecret_shouldThrowException()
     {
-        $encoder = new TokenEncoder('s0m3s3cr3t', 'HS256', 10);
-        $decoder = new TokenEncoder('0th3rs3cr3t', 'HS256', 10);
+        $encoder = new TokenEncoder('s0m3s3cr3t-that-is-long-enough-32', 'HS256', 10);
+        $decoder = new TokenEncoder('0th3rs3cr3t-that-is-long-enough!', 'HS256', 10);
 
         $token = $encoder->encode(['first' => 'payload']);
 
@@ -127,12 +112,10 @@ class TokenEncoderTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decode_WhenTokenIsExpired_ShouldThrowException()
     {
-        $encoder = new TokenEncoder('s3cr3t', 'HS256', 10);
+        $encoder = new TokenEncoder('s3cr3t-that-is-long-enough-for-32', 'HS256', 10);
         $token = $encoder->encode(['something' => 'anything']);
 
         JWT::$timestamp = time() + 11 * 60;

@@ -8,12 +8,11 @@ use Illuminate\Support\Facades\Event;
 use Middleware\Auth\Jwt\Events\JwtAuthFailure;
 use Middleware\Auth\Jwt\Http\Middlewares\JwtAuthMiddleware;
 use Middleware\Auth\Jwt\Services\TokenEncoder;
+use PHPUnit\Framework\Attributes\Test;
 
 class JwtAuthMiddlewareTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function unprotectedEndpointReturnSuccessfulResponseWhenRequestDoesNotHaveJwtToken(): void
     {
         $response = $this->get('api/unprotected');
@@ -21,9 +20,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedEndpointReturnWithStatus401WhenRequestDoesNotHaveJwtToken(): void
     {
         $response = $this->get('api/protected');
@@ -31,9 +28,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedEndpointDispatchJwtAuthFailureEventWithActualRequestWhenRequestDoesNotHaveJwtToken(): void
     {
         Event::fake();
@@ -45,9 +40,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedEndpointReturnWithStatus401WhenRequestHasInValidJwtToken(): void
     {
         $response = $this->get('api/protected', ['Authorization' => 'Bearer invalid_token']);
@@ -55,9 +48,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedEndpointDispatchJwtAuthFailureEventWhenRequestAuthenticationFails(): void
     {
         Event::fake();
@@ -67,9 +58,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         Event::assertDispatched(JwtAuthFailure::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedEndpointDispatchJwtAuthFailureEventWithActualRequestWhenRequestAuthenticationFails(): void
     {
         Event::fake();
@@ -81,9 +70,7 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedEndpointReturnSuccessfulResponseWhenRequestHasValidJwtToken(): void
     {
         $token = app()->get(TokenEncoder::class)->encode(
@@ -96,13 +83,11 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_decorateAttribuesIsEnabledAndTokenHasPayload_decorateTokenPayloadToRequestAttributes(): void
     {
         config(['jwt.decorateRequestWithTokenPayload' => true]);
-        $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
+        $tokenEncoder = new TokenEncoder('secret-that-is-long-enough-32b!!', 'HS256', 10);
         $token = $tokenEncoder->encode(['staffId' => 1234]);
         $middleware = new JwtAuthMiddleware($tokenEncoder);
         $request = new Request();
@@ -119,13 +104,11 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $this->assertEquals(['staffId' => 1234], $request->get('tokenPayload'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_decorateAttribuesIsEnabledButTokenHasEmptyPayload_decorateEmptyTokenPayloadToRequestAttributes(): void
     {
         config(['jwt.decorateRequestWithTokenPayload' => true]);
-        $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
+        $tokenEncoder = new TokenEncoder('secret-that-is-long-enough-32b!!', 'HS256', 10);
         $token = $tokenEncoder->encode([]);
         $middleware = new JwtAuthMiddleware($tokenEncoder);
         $request = new Request();
@@ -142,13 +125,11 @@ class JwtAuthMiddlewareTest extends BaseTestCase
         $this->assertEquals([], $request->get('tokenPayload'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_decorateAttribuesIsDisabled_doesNotDecorateTokenPayloadToRequestAttributes(): void
     {
         config(['jwt.decorateRequestWithTokenPayload' => false]);
-        $tokenEncoder = new TokenEncoder('secret', 'HS256', 10);
+        $tokenEncoder = new TokenEncoder('secret-that-is-long-enough-32b!!', 'HS256', 10);
         $token = $tokenEncoder->encode(['staffId' => 1234]);
         $middleware = new JwtAuthMiddleware($tokenEncoder);
         $request = new Request();

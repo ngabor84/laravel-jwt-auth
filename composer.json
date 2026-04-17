@@ -12,17 +12,17 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "firebase/php-jwt": "^v6.10",
-        "illuminate/support": "^v11.26",
-        "symfony/http-foundation": "^v7.1",
-        "symfony/http-kernel": "^v7.1"
+        "php": "^8.4",
+        "firebase/php-jwt": "^7.0",
+        "illuminate/support": "^11.0 || ^13.0",
+        "symfony/http-foundation": "^7.0 || ^8.0",
+        "symfony/http-kernel": "^7.0 || ^8.0"
     },
     "require-dev": {
-        "laravel/framework": "^v11.26",
+        "laravel/framework": "^11.0",
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^11.3",
-        "orchestra/testbench": "^v9.5"
+        "phpunit/phpunit": "^12.0",
+        "orchestra/testbench": "^9.0"
     },
     "autoload": {
         "psr-4": {

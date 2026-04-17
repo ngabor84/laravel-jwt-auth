@@ -17,7 +17,7 @@ abstract class BaseTestCase extends TestCase
         parent::resolveApplicationConfiguration($app);
 
         $app['config']['jwt'] = [
-            'secret' => 'test_secret',
+            'secret' => 'test_secret_that_is_long_enough!',
             'algo' => 'HS256',
             'expiration' => 10,
             'decorateRequestWithTokenPayload' => false,
